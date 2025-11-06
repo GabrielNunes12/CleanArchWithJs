@@ -7,7 +7,7 @@ export class InMemoryCustomerRepository implements CustomerRepository {
     private customers: Map<string, Customer> = new Map();
 
     async save(customer: Customer): Promise<void> {
-        this.customers.set(customer.id, customer);
+        this.customers.set(customer.retrieveId(), customer);
     }
 
     async findById(id: string): Promise<Customer | null> {
@@ -19,10 +19,10 @@ export class InMemoryCustomerRepository implements CustomerRepository {
     }
 
     async update(customer: Customer): Promise<void> {
-        if (!this.customers.has(customer.id)) {
+        if (!this.customers.has(customer.retrieveId())) {
             throw new Error('Customer not found');
         }
-        this.customers.set(customer.id, customer);
+        this.customers.set(customer.retrieveId(), customer);
     }
 
     async delete(id: string): Promise<void> {
