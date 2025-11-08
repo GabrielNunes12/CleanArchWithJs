@@ -1,10 +1,12 @@
 import { Email } from '../value-objects/email.js';
+import { Address } from '../value-objects/address.js';
 
 export class Customer {
     private readonly _id: string;
     private _name: string;
     private _email: Email;
     private _active: boolean;
+    private _addresses: Address[] = [];
 
     constructor(id: string, name: string, email: Email) {
         this._id = id;
@@ -48,5 +50,17 @@ export class Customer {
             throw new Error('Customer name is invalid');
         }
         return this._active;
+    }
+
+    addAddress(address: Address): void {
+        // Business rule: Customer can have maximum of 3 addresses
+        if (this._addresses.length >= 3) {
+            throw new Error('Customer cannot have more than 3 addresses');
+        }
+        this._addresses.push(address);
+    }
+
+    get addresses(): ReadonlyArray<Address> {
+        return this._addresses;
     }
 }
